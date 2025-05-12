@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: ak-nginx
 spec:
-  replicas: 5
+  replicas: 1
   selector:
     matchLabels:
       app: ak-nginx
@@ -15,6 +15,8 @@ spec:
       containers:
       - name: ak-nginx
         image: www.magicbus.tech/argocd/ak-nginx:latest
-        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
+ #     imagePullSecrets:
+  #    - name: harbor-secret
+
