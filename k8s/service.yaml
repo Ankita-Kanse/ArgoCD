@@ -1,13 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-service
+  name: ak-nginx-service
 spec:
   selector:
-    app: nginx
+    app: ak-nginx
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
-      nodePort: 30080  # NodePort between 30000-32767
+  - protocol: TCP
+    port: 80
+    targetPort: 80
   type: NodePort
