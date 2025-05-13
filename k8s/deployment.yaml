@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: ak-nginx
 spec:
-  replicas: 3
+  replicas: 5
   selector:
     matchLabels:
       app: ak-nginx
