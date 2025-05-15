@@ -4,7 +4,7 @@ metadata:
   name: ak-nginx
   namespace: default
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: ak-nginx
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: ak-nginx
-        image: nginx:1.25.0
+        image: nginx:1.25.1
         ports:
         - containerPort: 80
  #     imagePullSecrets:
