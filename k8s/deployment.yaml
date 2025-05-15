@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: ak-nginx
-        image: www.magicbus.tech/argocd/ak-nginx:latest
+        image: nginx:1.25.0
         ports:
         - containerPort: 80
  #     imagePullSecrets:
