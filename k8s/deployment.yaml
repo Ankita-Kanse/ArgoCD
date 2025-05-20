@@ -4,7 +4,7 @@ metadata:
   name: ak-nginx
   namespace: default
 spec:
-  replicas: 5
+  replicas: 2
   selector:
     matchLabels:
       app: ak-nginx
@@ -15,9 +15,8 @@ spec:
     spec:
       containers:
       - name: ak-nginx
-        image: nginx:1.25.1
+        image: www.magicbus.tech/argocd/ak-nginx:latest
         ports:
         - containerPort: 80
  #     imagePullSecrets:
   #    - name: harbor-secret
-
