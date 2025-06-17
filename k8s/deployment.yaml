@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: ak-nginx
-        image: www.magicbus.tech/argocd/ak-nginx:latest
+        image: 329599621384.dkr.ecr.ap-south-1.amazonaws.com/demorepo1:nginx1
         ports:
         - containerPort: 80
  #     imagePullSecrets:
