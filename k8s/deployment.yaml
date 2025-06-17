@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ak-nginx
-  namespace: default
+  namespace: nginx
 spec:
   replicas: 2
   selector:
@@ -18,5 +18,5 @@ spec:
         image: 329599621384.dkr.ecr.ap-south-1.amazonaws.com/demorepo1:nginx1
         ports:
         - containerPort: 80
- #     imagePullSecrets:
-  #    - name: harbor-secret
+      imagePullSecrets:
+      - name: ecr-secret
