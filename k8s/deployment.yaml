@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: ak-nginx
-        image: 329599621384.dkr.ecr.ap-south-1.amazonaws.com/demorepo1:nginx
+        image: public.ecr.aws/v7f8p0w8/cicd:latest
         ports:
         - containerPort: 80
       imagePullSecrets:
