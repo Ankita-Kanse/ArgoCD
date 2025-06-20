@@ -5,7 +5,7 @@ pipeline {
         AWS_REGION = 'us-east-1'
         ECR_REPO = 'public.ecr.aws/v7f8p0w8/cicd'
         IMAGE_TAG = 'latest'
-        DEPLOY_REPO = 'https://github.com/Ankita-Kanse/argocd-deploy.git' // Change if different
+        DEPLOY_REPO = 'https://github.com/Ankita-Kanse/ArgoCD.git' // Change if different
     }
 
     stages {
@@ -59,7 +59,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'git-creds', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                     sh '''
                     rm -rf argocd-deploy
-                    git clone https://$GIT_USER:$GIT_PASS@github.com/Ankita-Kanse/argocd-deploy.git
+                    git clone https://$GIT_USER:$GIT_PASS@github.com/Ankita-Kanse/ArgoCD.git
                     cd argocd-deploy
 
                     # Replace the image in deployment.yaml
