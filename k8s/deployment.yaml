@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: ak-nginx
-        image: public.ecr.aws/v7f8p0w8/cicd:build-8
+        image: public.ecr.aws/v7f8p0w8/cicd:build-9
         ports:
         - containerPort: 80
       imagePullSecrets:
