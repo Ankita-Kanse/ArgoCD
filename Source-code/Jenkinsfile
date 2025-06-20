@@ -2,13 +2,14 @@ pipeline {
     agent any
 
     environment {
-        AWS_REGION = 'us-east-1' // Replace with your region
-        ECR_REPO = 'public.ecr.aws/v7f8p0w8/cicd' // Replace with your ECR repo
+        AWS_REGION = 'us-east-1'
+        ECR_REPO = 'public.ecr.aws/v7f8p0w8/cicd'
         IMAGE_TAG = 'latest'
+        DEPLOY_REPO = 'https://github.com/Ankita-Kanse/argocd-deploy.git' // Change if different
     }
 
     stages {
-        stage('Clone Repo') {
+        stage('Clone Source Repo') {
             steps {
                 checkout scm
             }
@@ -52,14 +53,35 @@ pipeline {
                 sh 'docker push $ECR_REPO:$IMAGE_TAG'
             }
         }
+
+        stage('Update Git Manifests for ArgoCD') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'git-creds', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+                    sh '''
+                    rm -rf argocd-deploy
+                    git clone https://$GIT_USER:$GIT_PASS@github.com/Ankita-Kanse/argocd-deploy.git
+                    cd argocd-deploy
+
+                    # Replace the image in deployment.yaml
+                    sed -i 's|image: .*|image: public.ecr.aws/v7f8p0w8/cicd:latest|' deployment.yaml
+
+                    git config user.email "jenkins@demo.com"
+                    git config user.name "Jenkins"
+                    git add deployment.yaml
+                    git commit -m "CI: Update image tag to $IMAGE_TAG"
+                    git push origin main
+                    '''
+                }
+            }
+        }
     }
 
     post {
         success {
-            echo '✅ Image built and pushed to ECR successfully.'
+            echo '✅ CI/CD Pipeline completed. Image pushed and ArgoCD will auto-deploy.'
         }
         failure {
-            echo '❌ Build failed.'
+            echo '❌ Build or deployment update failed.'
         }
     }
 }
