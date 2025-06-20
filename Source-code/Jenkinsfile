@@ -5,7 +5,7 @@ pipeline {
         AWS_REGION = 'us-east-1'
         ECR_REPO = 'public.ecr.aws/v7f8p0w8/cicd'
         IMAGE_TAG = 'latest'
-        DEPLOY_REPO = 'https://github.com/Ankita-Kanse/ArgoCD.git' // Change if different
+        DEPLOY_REPO = 'https://github.com/Ankita-Kanse/ArgoCD.git'
     }
 
     stages {
@@ -32,7 +32,7 @@ pipeline {
             }
         }
 
-        stage('Login to ECR') {
+        stage('Login to Public ECR') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'aws-creds', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     sh '''
@@ -54,20 +54,20 @@ pipeline {
             }
         }
 
-        stage('Update Git Manifests for ArgoCD') {
+        stage('Update Deployment YAML') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'git-creds', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                     sh '''
-                    rm -rf argocd-deploy
+                    rm -rf ArgoCD
                     git clone https://$GIT_USER:$GIT_PASS@github.com/Ankita-Kanse/ArgoCD.git
-                    cd argocd-deploy
+                    cd ArgoCD
 
-                    # Replace the image in deployment.yaml
-                    sed -i 's|image: .*|image: public.ecr.aws/v7f8p0w8/cicd:latest|' deployment.yaml
+                    # Replace image in k8s/deployment.yaml
+                    sed -i 's|image: .*|image: public.ecr.aws/v7f8p0w8/cicd:latest|' k8s/deployment.yaml
 
                     git config user.email "jenkins@demo.com"
                     git config user.name "Jenkins"
-                    git add deployment.yaml
+                    git add k8s/deployment.yaml
                     git commit -m "CI: Update image tag to $IMAGE_TAG"
                     git push origin main
                     '''
